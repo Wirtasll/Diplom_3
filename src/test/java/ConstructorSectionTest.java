@@ -7,12 +7,13 @@ import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import pageObject.MainPage;
+import page_object.MainPage;
 
 import java.util.concurrent.TimeUnit;
 
 @RunWith(Parameterized.class)
 public class ConstructorSectionTest {
+    final String URL = "https://stellarburgers.nomoreparties.site/";
     private WebDriver driver;
     private String driverType;
 
@@ -29,7 +30,7 @@ public class ConstructorSectionTest {
             // Ожидание
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             // Переход на тестируемый сайт
-            driver.navigate().to("https://stellarburgers.nomoreparties.site/");
+            driver.navigate().to(URL);
         } else if (driverType.equals("yandexdriver")) {
             System.setProperty("webdriver.chrome.driver", "/WebDriver/bin/chromedriver126.exe");
             // Установка пути к браузеру Yandex
@@ -39,7 +40,7 @@ public class ConstructorSectionTest {
             // Ожидание
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             // Переход на тестируемый сайт
-            driver.navigate().to("https://stellarburgers.nomoreparties.site/");
+            driver.navigate().to(URL);
         }
     }
 

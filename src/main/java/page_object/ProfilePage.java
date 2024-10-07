@@ -1,5 +1,6 @@
-package pageObject;
+package page_object;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -22,28 +23,28 @@ public class ProfilePage {
     }
 
 
-    //Клик по кнопке 'Конструктор'.
+    @Step("Клик по кнопке 'Конструктор'")
     public void clickOnConstructorButton() {
         driver.findElement(constructorButton).click();
         waitForInvisibilityLoadingAnimation();
     }
 
-    //Клик по кнопке 'Выйти'.
+    @Step("Клик по кнопке 'Выйти'")
     public void clickOnExitButton() {
         driver.findElement(exitButton).click();
         waitForInvisibilityLoadingAnimation();
     }
 
-    //Ожидание загрузки страницы личного кабинета с текстом изменения персональных данных.
+    @Step("Выставлено ожидание загрузки страницы личного кабинета с текстом изменения персональных данных")
     public void waitForLoadProfilePage() {
         // подожди 3 секунды, чтобы элемент с нужным текстом стал видимым
         new WebDriverWait(driver, 3)
                 .until(ExpectedConditions.visibilityOfElementLocated(textOnProfilePage));
     }
 
-    //Ожидание загрузки страницы полностью.
+    @Step("Выставлено ожидание загрузки страницы полностью, анимация исчезнет")
     public void waitForInvisibilityLoadingAnimation() {
-        new WebDriverWait(driver, 5)
+        new WebDriverWait(driver, 6)
                 .until(ExpectedConditions.invisibilityOfElementLocated
                         (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']")));
     }

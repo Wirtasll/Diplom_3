@@ -1,5 +1,6 @@
-package pageObject;
+package page_object;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import static org.junit.Assert.assertEquals;
 
 public class MainPage {
+
 
     private final WebDriver driver;
 
@@ -40,76 +42,77 @@ public class MainPage {
     //текст для проверки видимости на главной странице
     public By textBurgerMainPage = By.xpath(".//section/h1[text()='Соберите бургер']");
 
+
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    //Клик по кнопке 'Войти в аккаунт'
+    @Step("Клик по кнопке 'Войти в аккаунт'")
     public void clickOnLoginButton() {
         driver.findElement(loginButton).click();
         waitForInvisibilityLoadingAnimation();
     }
 
-    //Клик по кнопке 'Личный Кабинет'
+    @Step("Клик по кнопке 'Личный Кабинет'")
     public void clickOnAccountButton() {
         driver.findElement(accountButton).click();
         waitForInvisibilityLoadingAnimation();
     }
 
-    //Клик по логотипу 'Stellar Burgers'
+    @Step("Клик по логотипу 'Stellar Burgers'")
     public void clickOnLogo() {
         driver.findElement(logo).click();
         waitForInvisibilityLoadingAnimation();
     }
 
-    //Клик по кнопке 'Конструктор'
+    @Step("Клик по кнопке 'Конструктор'")
     public void clickOnConstructorButton() {
         driver.findElement(constructorButton).click();
         waitForInvisibilityLoadingAnimation();
     }
 
 
-    //Клик по кнопке 'Булки'
+    @Step("Клик по кнопке 'Булки'")
     public void clickOnBunsButton() throws InterruptedException {
-        Thread.sleep(500);
+        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(bunsButton));
         driver.findElement(bunsButton).click();
 
     }
 
-    //Клик по кнопке 'Соуса'
+    @Step("Клик по кнопке 'Соуса'")
     public void clickOnSaucesButton() throws InterruptedException {
-        Thread.sleep(500);
+        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(saucesButton));
         driver.findElement(saucesButton).click();
     }
 
-    //Клик по кнопке 'Начинки'
+    @Step("Клик по кнопке 'Начинки'")
     public void clickOnFillingButton() throws InterruptedException {
-        Thread.sleep(500);
+        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(fillingsButton));
         driver.findElement(fillingsButton).click();
     }
 
     public void checkToppingBun() throws InterruptedException {
-        Thread.sleep(500);
+        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(activityTopping));
         String countActivity = driver.findElement(activityTopping).getText();
         assertEquals("Булки", countActivity);
     }
     public void checkToppingSauce() throws InterruptedException {
-        Thread.sleep(500);
+        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(activityTopping));
         String countActivity = driver.findElement(activityTopping).getText();
         assertEquals(countActivity,"Соусы");
     }
     public void checkToppingFillings() throws InterruptedException {
-        Thread.sleep(1000);
+        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(activityTopping));
         String countActivity = driver.findElement(activityTopping).getText();
         assertEquals(countActivity,"Начинки");
     }
-    //Выставлено ожидание главная страница, и загрузка текста 'Соберите бургер'
+    @Step("Выставлено ожидание главная страница, и загрузка текста 'Соберите бургер'")
     public void waitForLoadMainPage() {
         new WebDriverWait(driver, 15)
                 .until(ExpectedConditions.visibilityOfElementLocated(textBurgerMainPage));
     }
 
-    //Выставлено ожидание загрузки текст и картинка с булкой на главной странице
+    @Step("Выставлено ожидание загрузки текст и картинка с булкой на главной странице")
     public void waitForLoadBunsHeader() {
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.visibilityOfElementLocated(bunsImg));
@@ -117,7 +120,7 @@ public class MainPage {
                 .until(ExpectedConditions.visibilityOfElementLocated(bunsText));
     }
 
-    //Выставлено ожидание загрузки картинка с соусом на главной странице.
+    @Step("Выставлено ожидание загрузки картинка с соусом на главной странице.")
     public void waitForLoadSaucesHeader() {
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.visibilityOfElementLocated(saucesImg));
@@ -125,14 +128,14 @@ public class MainPage {
 
     }
 
-    //Выставлено ожидание загрузки с начинкой на главной странице.
+    @Step("Выставлено ожидание загрузки с начинкой на главной странице.")
     public void waitForLoadFillingsHeader() {
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.visibilityOfElementLocated(fillingsImg));
         waitDocReady();
     }
 
-    //Выставлено ожидание загрузки страницы полностью, анимация исчезнет.
+    @Step("Выставлено ожидание загрузки страницы полностью, анимация исчезнет.")
     public void waitForInvisibilityLoadingAnimation() {
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.invisibilityOfElementLocated
@@ -140,7 +143,7 @@ public class MainPage {
         waitDocReady();
     }
 
-    //Выставлено ожидание загрузки страницы полностью, дополнительный метод ожидания.
+    @Step("Выставлено ожидание загрузки страницы полностью, дополнительный метод ожидания.")
     public void waitDocReady() {
         new WebDriverWait(driver, 20)
                 .until((ExpectedCondition<Boolean>) wd ->

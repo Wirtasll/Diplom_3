@@ -1,5 +1,6 @@
-package pageObject;
+package page_object;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -24,39 +25,39 @@ public class PasswordPage {
     }
 
 
-    //Ввод Email
+    @Step("Ввод Email")
     public void setEmail(String email) {
         driver.findElement(emailField).sendKeys(email);
     }
 
-    //Клик по кнопке 'Восстановить'
+    @Step("Клик по кнопке 'Восстановить'")
     public void clickOnRecoverButton() {
         driver.findElement(recoverButton).click();
         waitForInvisibilityLoadingAnimation();
     }
 
-    //Клик по ссылке 'Войти'
+    @Step("Клик по ссылке 'Войти'")
     public void clickOnLoginLink() {
         driver.findElement(loginLink).click();
         waitForInvisibilityLoadingAnimation();
     }
 
-    //Восстановление пароля
+    @Step("Восстановление пароля")
     public void recoverPassword(String email) {
         setEmail(email);
         clickOnRecoverButton();
     }
 
-    //Ожидание загрузки страницы полностью.
+    @Step("Выставлено ожидание загрузки страницы полностью")
     public void waitForInvisibilityLoadingAnimation() {
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.invisibilityOfElementLocated
                         (By.xpath(".//img[@src='./static/media/loading.89540200.svg' and @alt='loading animation']")));
     }
 
-    //Ожидание загрузки страницы с восстановления пароля.
+    @Step("Ожидание загрузки страницы с восстановления пароля.")
     public void waitForLoadedRecoverPassword() {
-        new WebDriverWait(driver, 3)
+        new WebDriverWait(driver, 4)
                 .until(ExpectedConditions.visibilityOfElementLocated(recoverPassword));
     }
 }

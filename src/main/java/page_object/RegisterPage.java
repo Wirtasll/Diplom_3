@@ -1,5 +1,6 @@
-package pageObject;
+package page_object;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -47,7 +48,7 @@ public class RegisterPage {
         waitForInvisibilityLoadingAnimation();
     }
 
-    // Регистрация пользователя
+    @Step("Регистрация пользователя")
     public void registration(String name, String email, String password) {
         setName(name);
         setEmail(email);
@@ -55,13 +56,13 @@ public class RegisterPage {
         clickOnRegisterButton();
     }
 
-    // Ожидание загрузки страницы регистрации через текст 'Регистрация'.
+    @Step("Ожидание загрузки страницы регистрации через текст 'Регистрация'")
     public void waitForLoadRegisterPage() {
-        new WebDriverWait(driver, 3)
+        new WebDriverWait(driver, 4)
                 .until(ExpectedConditions.visibilityOfElementLocated(registerText));
     }
 
-    // Ожидание загрузки страницы полностью.
+    @Step("Ожидание загрузки страницы полностью")
     public void waitForInvisibilityLoadingAnimation() {
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.invisibilityOfElementLocated

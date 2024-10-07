@@ -5,9 +5,10 @@ import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import pageObject.RegisterPage;
-import pageObject.LoginPage;
-import pageObject.MainPage;
+import page_object.ApiUser;
+import page_object.RegisterPage;
+import page_object.LoginPage;
+import page_object.MainPage;
 
 
 import java.util.concurrent.TimeUnit;
@@ -16,8 +17,10 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 @RunWith(Parameterized.class)
 public class RegistrationTest {
+    final String URL = "https://stellarburgers.nomoreparties.site/";
     private WebDriver driver;
     private String driverType;
+    public static String accessToken;
 
     String NAME = randomAlphanumeric(4, 8);
     String EMAIL = randomAlphanumeric(6, 10) + "@yandex.ru";
@@ -37,7 +40,7 @@ public class RegistrationTest {
             // Ожидание
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             // Переход на тестируемый сайт
-            driver.navigate().to("https://stellarburgers.nomoreparties.site/");
+            driver.navigate().to(URL);
         } else if (driverType.equals("yandexdriver")) {
             System.setProperty("webdriver.chrome.driver", "/WebDriver/bin/chromedriver126.exe");
             // Установка пути к браузеру Yandex
@@ -47,7 +50,7 @@ public class RegistrationTest {
             // Ожидание
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             // Переход на тестируемый сайт
-            driver.navigate().to("https://stellarburgers.nomoreparties.site/");
+            driver.navigate().to(URL);
         }
     }
 
@@ -89,5 +92,10 @@ public class RegistrationTest {
     public void tearDown() {
         driver.quit();
     }
+    @AfterClass
+    public static void afterClass() {
+        ApiUser.deleteUser(accessToken);
+    }
+
 
 }
