@@ -1,4 +1,4 @@
-package page_object;
+package page.object;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -14,6 +14,7 @@ public class MainPage {
 
 
     private final WebDriver driver;
+    public final static String URL = "https://stellarburgers.nomoreparties.site";
 
     //Кнопка "Войти в аккаунт"
     private final By loginButton = By.xpath(".//button[text()='Войти в аккаунт']");

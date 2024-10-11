@@ -1,4 +1,4 @@
-package page_object;
+package client;
 
 public class User {
     private String email;

@@ -1,23 +1,22 @@
+import client.User;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.RestAssured;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import page_object.ApiUser;
-import page_object.RegisterPage;
-import page_object.LoginPage;
-import page_object.MainPage;
 
+import client.ApiUser;
+import page.object.RegisterPage;
+import page.object.LoginPage;
+import page.object.MainPage;
 
-import java.util.concurrent.TimeUnit;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static page.object.MainPage.URL;
 
 @RunWith(Parameterized.class)
 public class RegistrationTest {
-    final String URL = "https://stellarburgers.nomoreparties.site/";
     private WebDriver driver;
     private String driverType;
     public static String accessToken;
@@ -32,26 +31,8 @@ public class RegistrationTest {
     }
 
     @Before
-    public void startUp() {
-        if (driverType.equals("chromedriver")) {
-            System.setProperty("webdriver.chrome.driver", "/WebDriver/bin/chromedriver.exe");
-            ChromeOptions options = new ChromeOptions();
-            driver = new ChromeDriver(options);
-            // Ожидание
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            // Переход на тестируемый сайт
-            driver.navigate().to(URL);
-        } else if (driverType.equals("yandexdriver")) {
-            System.setProperty("webdriver.chrome.driver", "/WebDriver/bin/chromedriver126.exe");
-            // Установка пути к браузеру Yandex
-            ChromeOptions options = new ChromeOptions();
-            options.setBinary("/Users/Иван/AppData/Local/Yandex/YandexBrowser/Application/browser.exe");
-            driver = new ChromeDriver(options);
-            // Ожидание
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            // Переход на тестируемый сайт
-            driver.navigate().to(URL);
-        }
+    public void setUp() {
+        driver = WebDriverFactory.createWebDriver();
     }
 
     @Parameterized.Parameters(name = "Результаты проверок браузера: {0}")
@@ -65,6 +46,7 @@ public class RegistrationTest {
     @Test
     @DisplayName("Успешная регистрация.")
     public void successfulRegistrationTest() {
+        driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnLoginButton();
         LoginPage loginPage = new LoginPage(driver);
@@ -78,6 +60,7 @@ public class RegistrationTest {
     @Test
     @DisplayName("Неуспешная регистрация пользователя.")
     public void failedPasswordRegistrationTest() {
+        driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnLoginButton();
         LoginPage loginPage = new LoginPage(driver);
@@ -93,8 +76,10 @@ public class RegistrationTest {
         driver.quit();
     }
     @AfterClass
-    public static void afterClass() {
-        ApiUser.deleteUser(accessToken);
+    public static void deleteUserTest() {
+        if (accessToken != null) {
+            ApiUser.deleteUser(accessToken);
+        }
     }
 
 

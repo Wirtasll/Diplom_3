@@ -5,15 +5,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import page_object.MainPage;
+import page.object.MainPage;
 
-import java.util.concurrent.TimeUnit;
+import static page.object.MainPage.URL;
 
 @RunWith(Parameterized.class)
 public class ConstructorSectionTest {
-    final String URL = "https://stellarburgers.nomoreparties.site/";
     private WebDriver driver;
     private String driverType;
 
@@ -22,26 +19,8 @@ public class ConstructorSectionTest {
     }
 
     @Before
-    public void startUp() {
-        if (driverType.equals("chromedriver")) {
-            System.setProperty("webdriver.chrome.driver", "/WebDriver/bin/chromedriver.exe");
-            ChromeOptions options = new ChromeOptions();
-            driver = new ChromeDriver(options);
-            // Ожидание
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            // Переход на тестируемый сайт
-            driver.navigate().to(URL);
-        } else if (driverType.equals("yandexdriver")) {
-            System.setProperty("webdriver.chrome.driver", "/WebDriver/bin/chromedriver126.exe");
-            // Установка пути к браузеру Yandex
-            ChromeOptions options = new ChromeOptions();
-            options.setBinary("/Users/Иван/AppData/Local/Yandex/YandexBrowser/Application/browser.exe");
-            driver = new ChromeDriver(options);
-            // Ожидание
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            // Переход на тестируемый сайт
-            driver.navigate().to(URL);
-        }
+    public void setUp() {
+        driver = WebDriverFactory.createWebDriver();
     }
 
     @Parameterized.Parameters(name = "Результаты проверок браузера: {0}")
@@ -55,6 +34,7 @@ public class ConstructorSectionTest {
     @Test
     @DisplayName("Переход в раздел 'Булки'.")
     public void transitionToBunsInConstructorTest() throws InterruptedException {
+        driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnSaucesButton();
         mainPage.clickOnBunsButton();
@@ -64,6 +44,7 @@ public class ConstructorSectionTest {
     @Test
     @DisplayName("Переход в раздел 'Соусы'.")
     public void transitionToSaucesInConstructorTest() throws InterruptedException {
+        driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnSaucesButton();
         mainPage.checkToppingSauce();
@@ -72,6 +53,7 @@ public class ConstructorSectionTest {
     @Test
     @DisplayName("Переход в раздел 'Начинки'.")
     public void transitionToFillingsInConstructorTest() throws InterruptedException {
+        driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnFillingButton();
         mainPage.checkToppingFillings();
