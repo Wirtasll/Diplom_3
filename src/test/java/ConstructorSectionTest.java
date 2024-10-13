@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
-import page.object.MainPage;
+import pageobject.MainPage;
 
-import static page.object.MainPage.URL;
+import static pageobject.MainPage.URL;
 
 @RunWith(Parameterized.class)
 public class ConstructorSectionTest {

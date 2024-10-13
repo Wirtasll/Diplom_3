@@ -6,13 +6,13 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
-import page.object.LoginPage;
-import page.object.MainPage;
-import page.object.ProfilePage;
+import pageobject.LoginPage;
+import pageobject.MainPage;
+import pageobject.ProfilePage;
 
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static page.object.MainPage.URL;
+import static pageobject.MainPage.URL;
 
 @RunWith(Parameterized.class)
 public class AccountTest {
@@ -115,8 +115,8 @@ public class AccountTest {
     public void tearDown() {
         driver.quit();
     }
-    @AfterClass
-    public static void deleteUserTest() {
+    @After
+    public void deleteUserTest() {
         if (accessToken != null) {
             ApiUser.deleteUser(accessToken);
         }

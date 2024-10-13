@@ -9,14 +9,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.junit.After;
-import page.object.LoginPage;
-import page.object.MainPage;
-import page.object.RegisterPage;
-import page.object.PasswordPage;
+import pageobject.LoginPage;
+import pageobject.MainPage;
+import pageobject.RegisterPage;
+import pageobject.PasswordPage;
 
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static page.object.MainPage.URL;
+import static pageobject.MainPage.URL;
 
 
 @RunWith(Parameterized.class)
@@ -108,9 +108,9 @@ import static page.object.MainPage.URL;
             mainPage.clickOnAccountButton();
             LoginPage loginPage = new LoginPage(driver);
             loginPage.clickOnForgotPasswordLink();
-            PasswordPage PasswordPage = new PasswordPage(driver);
-            PasswordPage.waitForLoadedRecoverPassword();
-            PasswordPage.clickOnLoginLink();
+            PasswordPage passwordPage = new PasswordPage(driver);
+            passwordPage.waitForLoadedRecoverPassword();
+            passwordPage.clickOnLoginLink();
             loginPage.authorization(email, password);
             mainPage.waitForLoadMainPage();
         }

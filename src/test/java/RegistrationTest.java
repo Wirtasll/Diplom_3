@@ -1,19 +1,17 @@
-import client.User;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 
 import client.ApiUser;
-import page.object.RegisterPage;
-import page.object.LoginPage;
-import page.object.MainPage;
+import pageobject.RegisterPage;
+import pageobject.LoginPage;
+import pageobject.MainPage;
 
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static page.object.MainPage.URL;
+import static pageobject.MainPage.URL;
 
 @RunWith(Parameterized.class)
 public class RegistrationTest {
@@ -75,8 +73,8 @@ public class RegistrationTest {
     public void tearDown() {
         driver.quit();
     }
-    @AfterClass
-    public static void deleteUserTest() {
+    @After
+    public void deleteUserTest() {
         if (accessToken != null) {
             ApiUser.deleteUser(accessToken);
         }
