@@ -2,34 +2,19 @@ import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import pageobject.MainPage;
 
 import static pageobject.MainPage.URL;
 
-@RunWith(Parameterized.class)
 public class ConstructorSectionTest {
     private WebDriver driver;
-    private String driverType;
-
-    public ConstructorSectionTest(String driverType) {
-        this.driverType = driverType;
-    }
 
     @Before
     public void setUp() {
         driver = WebDriverFactory.createWebDriver();
     }
 
-    @Parameterized.Parameters(name = "Результаты проверок браузера: {0}")
-    public static Object[][] getDataDriver() {
-        return new Object[][]{
-                {"chromedriver"},
-                {"yandexdriver"},
-        };
-    }
 
     @Test
     @DisplayName("Переход в раздел 'Булки'.")

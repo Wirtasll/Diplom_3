@@ -5,8 +5,6 @@ import io.restassured.RestAssured;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import org.junit.After;
 import pageobject.LoginPage;
@@ -19,11 +17,9 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static pageobject.MainPage.URL;
 
 
-@RunWith(Parameterized.class)
     public class LoginTest {
 
         private WebDriver driver;
-        private String driverType;
         private final String name = randomAlphanumeric(4, 8);
         private final String email = randomAlphanumeric(6, 10) + "@yandex.ru";
         private final String password = randomAlphanumeric(10, 20);
@@ -32,33 +28,22 @@ import static pageobject.MainPage.URL;
         private static String accessToken;
 
 
-        public LoginTest(String driverType) {
-            this.driverType = driverType;
-        }
-
         @Before
         public void setUp() {
             RestAssured.baseURI = URL;
             user = new User(email, password, name);
             apiUser = new ApiUser();
-            accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
             driver = WebDriverFactory.createWebDriver();
         }
 
 
-        @Parameterized.Parameters(name = "Результаты проверок браузера: {0}")
-        public static Object[][] getDataDriver() {
-            return new Object[][]{
-                    {"chromedriver"},
-                    {"yandexdriver"},
-            };
-        }
 
         @Test
         @DisplayName("Вход по кнопке 'Войти в аккаунт'.")
         public void enterByLoginButtonTest() {
             user = new User(email, password, name);
             ApiUser.postCreateNewUser(user);
+            accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
             driver.get(URL);
             MainPage mainPage = new MainPage(driver);
             mainPage.clickOnLoginButton();
@@ -72,6 +57,7 @@ import static pageobject.MainPage.URL;
         public void enterByPersonalAccountButtonTest() {
             user = new User(email, password, name);
             ApiUser.postCreateNewUser(user);
+            accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
             driver.get(URL);
             MainPage mainPage = new MainPage(driver);
             mainPage.clickOnAccountButton();
@@ -96,6 +82,8 @@ import static pageobject.MainPage.URL;
             loginPage.waitForLoadEntrance();
             loginPage.authorization(email, password);
             mainPage.waitForLoadMainPage();
+            user = new User(email, password, name);
+            accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
         }
 
         @Test
@@ -103,6 +91,7 @@ import static pageobject.MainPage.URL;
         public void enterByPasswordRecoveryFormatTest() {
             user = new User(email, password, name);
             ApiUser.postCreateNewUser(user);
+            accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
             driver.get(URL);
             MainPage mainPage = new MainPage(driver);
             mainPage.clickOnAccountButton();

@@ -1,7 +1,7 @@
+import client.User;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.RestAssured;
 import org.junit.*;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 
 import client.ApiUser;
@@ -13,33 +13,25 @@ import pageobject.MainPage;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static pageobject.MainPage.URL;
 
-@RunWith(Parameterized.class)
 public class RegistrationTest {
     private WebDriver driver;
-    private String driverType;
+    private User user;
+    private ApiUser apiUser;
     public static String accessToken;
 
-    String NAME = randomAlphanumeric(4, 8);
-    String EMAIL = randomAlphanumeric(6, 10) + "@yandex.ru";
-    String PASSWORD = randomAlphanumeric(10, 20);
-    String PASSWORD_FAILED = randomAlphanumeric(0, 5);
-
-    public RegistrationTest(String driverType) {
-        this.driverType = driverType;
-    }
+    String name = randomAlphanumeric(4, 8);
+    String email = randomAlphanumeric(6, 10) + "@yandex.ru";
+    String password = randomAlphanumeric(10, 20);
+    String passwordFailed = randomAlphanumeric(0, 5);
 
     @Before
     public void setUp() {
+        RestAssured.baseURI = URL;
+        user = new User(email, password, name);
+        apiUser = new ApiUser();
         driver = WebDriverFactory.createWebDriver();
     }
 
-    @Parameterized.Parameters(name = "Результаты проверок браузера: {0}")
-    public static Object[][] getDataDriver() {
-        return new Object[][]{
-                {"chromedriver"},
-                {"yandexdriver"},
-        };
-    }
 
     @Test
     @DisplayName("Успешная регистрация.")
@@ -51,8 +43,10 @@ public class RegistrationTest {
         loginPage.clickOnRegister();
         RegisterPage registerPage = new RegisterPage(driver);
         registerPage.waitForLoadRegisterPage();
-        registerPage.registration(NAME, EMAIL, PASSWORD);
+        registerPage.registration(name, email, password);
         loginPage.waitForLoadEntrance();
+        user = new User(email, password, name);
+        accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
     }
 
     @Test
@@ -65,7 +59,7 @@ public class RegistrationTest {
         loginPage.clickOnRegister();
         RegisterPage registerPage = new RegisterPage(driver);
         registerPage.waitForLoadRegisterPage();
-        registerPage.registration(NAME, EMAIL, PASSWORD_FAILED);
+        registerPage.registration(name, email, passwordFailed);
         Assert.assertTrue("Текст об ошибке отсутствует", driver.findElement(registerPage.errorPasswordText).isDisplayed());
     }
 

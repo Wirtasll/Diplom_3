@@ -3,8 +3,6 @@ import client.User;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import org.junit.*;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
 import pageobject.LoginPage;
 import pageobject.MainPage;
@@ -14,11 +12,9 @@ import pageobject.ProfilePage;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static pageobject.MainPage.URL;
 
-@RunWith(Parameterized.class)
 public class AccountTest {
 
     private WebDriver driver;
-    private String driverType;
     private final String name = randomAlphanumeric(4, 8);
     private final String email = randomAlphanumeric(6, 10) + "@yandex.ru";
     private final String password = randomAlphanumeric(10, 20);
@@ -26,32 +22,21 @@ public class AccountTest {
     private ApiUser apiUser;
     private static String accessToken;
 
-    public AccountTest(String driverType) {
-        this.driverType = driverType;
-    }
-
     @Before
     public void setUp() {
         RestAssured.baseURI = URL;
         user = new User(email, password, name);
         apiUser = new ApiUser();
-        accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
         driver = WebDriverFactory.createWebDriver();
     }
 
-    @Parameterized.Parameters(name = "Результаты проверок браузера: {0}")
-    public static Object[][] getDataDriver() {
-        return new Object[][]{
-                {"chromedriver"},
-                {"yandexdriver"},
-        };
-    }
 
     @Test
     @DisplayName("Переход в личный кабинет.")
     public void transitionToProfilePageTest() {
         user = new User(email, password, name);
         ApiUser.postCreateNewUser(user);
+        accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
         driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnAccountButton();
@@ -65,6 +50,7 @@ public class AccountTest {
     public void transitionToConstructorFromProfilePageTest() {
         user = new User(email, password, name);
         ApiUser.postCreateNewUser(user);
+        accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
         driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.waitForInvisibilityLoadingAnimation();
@@ -81,6 +67,7 @@ public class AccountTest {
     public void transitionToStellarBurgersFromProfilePageTest() {
         user = new User(email, password, name);
         ApiUser.postCreateNewUser(user);
+        accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
         driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnAccountButton();
@@ -96,6 +83,7 @@ public class AccountTest {
     public void exitFromProfileTest() {
         user = new User(email, password, name);
         ApiUser.postCreateNewUser(user);
+        accessToken = ApiUser.checkRequestAuthLogin(user).then().extract().path("accessToken");
         driver.get(URL);
         MainPage mainPage = new MainPage(driver);
         mainPage.clickOnAccountButton();
